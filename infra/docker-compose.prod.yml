@@ -1,0 +1,89 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:?set POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-garage}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/001-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks: [private]
+
+  mosquitto:
+    image: eclipse-mosquitto:2.0
+    restart: unless-stopped
+    volumes:
+      - ./mosquitto/mosquitto.prod.conf:/mosquitto/config/mosquitto.conf:ro
+      - ./mosquitto/passwords:/mosquitto/config/passwords:ro
+      - ./mosquitto/certs:/mosquitto/certs:ro
+      - mosquitto-data:/mosquitto/data
+    ports:
+      - "8883:8883"
+    networks: [private]
+
+  api:
+    build:
+      context: ..
+      dockerfile: server/api/Dockerfile
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      API_PORT: 4000
+      WEB_ORIGIN: ${WEB_ORIGIN:?set WEB_ORIGIN}
+      DATABASE_URL: ${DATABASE_URL:?set DATABASE_URL}
+      MQTT_URL: mqtts://mosquitto:8883
+      MQTT_USERNAME: ${MQTT_USERNAME:?set MQTT_USERNAME}
+      MQTT_PASSWORD: ${MQTT_PASSWORD:?set MQTT_PASSWORD}
+      MQTT_CA_FILE: /run/secrets/mqtt-ca.crt
+      JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET}
+      CAMERA_UPLOAD_TOKEN: ${CAMERA_UPLOAD_TOKEN:?set CAMERA_UPLOAD_TOKEN}
+      CAMERA_DATA_DIR: /data/camera
+    volumes:
+      - camera-data:/data/camera
+      - ./mosquitto/certs/ca.crt:/run/secrets/mqtt-ca.crt:ro
+    ports:
+      - "20000:20000"
+    depends_on:
+      postgres: { condition: service_healthy }
+      mosquitto: { condition: service_started }
+    networks: [private]
+
+  web:
+    build:
+      context: ..
+      dockerfile: web/Dockerfile
+    restart: unless-stopped
+    depends_on: [api]
+    networks: [private]
+
+  reverse-proxy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      GARAGE_DOMAIN: ${GARAGE_DOMAIN:?set GARAGE_DOMAIN}
+    volumes:
+      - ./reverse-proxy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on: [api, web]
+    networks: [private]
+
+volumes:
+  postgres-data:
+  mosquitto-data:
+  camera-data:
+  caddy-data:
+  caddy-config:
+
+networks:
+  private:

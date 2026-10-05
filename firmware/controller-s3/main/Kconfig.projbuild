@@ -1,0 +1,78 @@
+menu "Garage controller"
+config GARAGE_ENABLE_RELAY
+    bool "Enable relay output"
+    default n
+    help
+        Keep disabled for diagnostic firmware. Enable only after GPIO and opener safety validation.
+config GARAGE_WIFI_SSID
+    string "Wi-Fi SSID"
+    default ""
+config GARAGE_WIFI_PASSWORD
+    string "Wi-Fi password"
+    default ""
+config GARAGE_MQTT_URI
+    string "MQTT broker URI"
+    default "mqtts://garage.example.invalid:8883"
+config GARAGE_DEVICE_ID
+    string "Controller device ID"
+    default "controller-s3-001"
+config GARAGE_MQTT_USERNAME
+    string "MQTT username"
+    default ""
+config GARAGE_MQTT_PASSWORD
+    string "MQTT password"
+    default ""
+config GARAGE_RELAY_PULSE_MS
+    int "Relay pulse duration (ms)"
+    range 100 2000
+    default 300
+config GARAGE_RELAY_INTERLOCK_MS
+    int "Relay interlock delay (ms)"
+    range 50 2000
+    default 100
+config GARAGE_REOPEN_DELAY_MS
+    int "Stop-to-reopen delay (ms)"
+    range 100 2000
+    default 400
+config GARAGE_HCSR04_BASELINE_CM
+    int "HC-SR04 empty-doorway distance (cm)"
+    range 20 400
+    default 150
+    help
+        Distance the HC-SR04 measures across the empty doorway to the fixed
+        target on the opposite side. Shorter readings mean something is in the beam.
+config GARAGE_TOF_BASELINE_CM
+    int "VL53L0X empty-doorway distance (cm), 0 = presence mode"
+    range 0 200
+    default 0
+    help
+        Distance the VL53L0X measures across the empty doorway. 0 selects
+        presence mode for doorways wider than the sensor range: no target means
+        clear, anything within 150 cm is an obstacle. Calibration picks the
+        mode automatically.
+config GARAGE_BEAM_TOLERANCE_CM
+    int "Allowed deviation from the empty-doorway distance (cm)"
+    range 3 100
+    default 15
+config GARAGE_SENSOR_FAULT_TIMEOUT_MS
+    int "Sensor fault timeout (ms)"
+    range 100 10000
+    default 1500
+config GARAGE_PIR_LIGHT_ENABLED
+    bool "Enable PIR light automation"
+    default y
+config GARAGE_PIR_LIGHT_TIMEOUT_SECONDS
+    int "PIR light timeout (seconds)"
+    range 1 3600
+    default 120
+config GARAGE_FIRMWARE_VERSION
+    string "Firmware version"
+    default "0.1.0-diagnostic"
+config GARAGE_WIFI_PROBE
+    bool "Wi-Fi probe only (spare board without display, sensors or relays)"
+    default n
+    help
+        Only joins Wi-Fi and MQTT and publishes telemetry and Wi-Fi reports.
+        Build it with its own GARAGE_DEVICE_ID; the API shows it as the
+        spare S3 and never lets it touch the controller's status.
+endmenu

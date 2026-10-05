@@ -1,0 +1,51 @@
+/*
+ * Design tokens, dark first (warm charcoal) with a light variant that follows the
+ * system setting. Semantic colours keep their meaning everywhere: green = safe /
+ * closed, amber = moving or warning, red = danger. Status is never colour alone;
+ * every state also has text and a shape (dot, ring, icon).
+ */
+:root {
+  color-scheme: dark;
+  --bg: #131210; --bg-raise: #191816; --bar: rgba(22,21,19,.88); --bar-solid: #171614;
+  --surface: #1e1c1a; --surface-2: #272522; --surface-3: #35322d;
+  --line: #2f2c28; --line-2: #48433d;
+  --fg: #f4f0ea; --fg-2: #bbb3a8; --fg-3: #8c8479;
+  --safe: #3ad271; --safe-ink: #8aebad; --safe-soft: rgba(58,210,113,.14);
+  --warn: #ffb22e; --warn-ink: #ffd48a; --warn-soft: rgba(255,178,46,.15);
+  --danger: #ff5047; --danger-ink: #ffa49e; --danger-soft: rgba(255,80,71,.15);
+  --danger-solid: #e2342b; --danger-tint: #2a1816; --danger-line: rgba(255,80,71,.5); --on-danger: #ffffff;
+  --action: #7fa9ff; --action-soft: rgba(127,169,255,.16); --on-action: #0c1424;
+  --neutral-soft: rgba(244,240,234,.07);
+  --focus: #9cc0ff;
+  --track: rgba(244,240,234,.07); --tick: rgba(244,240,234,.15); --knob: #f4f0ea;
+  --dial-hi: #2f2c28; --dial-lo: #171614; --dial-edge: rgba(255,255,255,.07); --dial-shade: rgba(0,0,0,.38); --drop: rgba(0,0,0,.45);
+  --s-frame: #d8d0c4; --s-pillar: #b2a99c; --s-inside: #0b0a09; --s-door: #cdc4b6; --s-slat: #948a7d; --s-floor: #6c655b; --s-up: #3ad271; --s-down: #ffb22e;
+  --cam-bg: #0a0a0b; --cam-ink: #f4f0ea; --cam-chip: rgba(10,10,11,.66);
+  --scrim: rgba(6,5,4,.62);
+  --font-display: "Bricolage Grotesque", "Figtree", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Figtree", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --r-sm: 12px; --r-md: 18px; --r-lg: 26px;
+  --tabbar-h: 66px;
+  --ease: cubic-bezier(.2,.8,.2,1);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+    --bg: #f2efea; --bg-raise: #faf8f5; --bar: rgba(246,244,240,.9); --bar-solid: #f6f4f0;
+    --surface: #ffffff; --surface-2: #f2efea; --surface-3: #e5e0d8;
+    --line: #e4dfd7; --line-2: #cbc4b9;
+    --fg: #1c1a17; --fg-2: #5b544b; --fg-3: #7f776c;
+    --safe: #16924a; --safe-ink: #0c6b35; --safe-soft: rgba(22,146,74,.12);
+    --warn: #c77d00; --warn-ink: #7f4f00; --warn-soft: rgba(214,140,0,.15);
+    --danger: #d6322a; --danger-ink: #a3201a; --danger-soft: rgba(214,50,42,.1);
+    --danger-solid: #d6322a; --danger-tint: #fdeeec; --danger-line: rgba(214,50,42,.42); --on-danger: #ffffff;
+    --action: #2f6bd8; --action-soft: rgba(47,107,216,.12); --on-action: #ffffff;
+    --neutral-soft: rgba(28,26,23,.06); --focus: #2f6bd8;
+    --track: rgba(28,26,23,.07); --tick: rgba(28,26,23,.17); --knob: #ffffff;
+    --dial-hi: #ffffff; --dial-lo: #ebe7e0; --dial-edge: rgba(255,255,255,.95); --dial-shade: rgba(80,64,40,.10); --drop: rgba(60,48,30,.16);
+    --s-frame: #4f4942; --s-pillar: #665f56; --s-inside: #2b2825; --s-door: #ddd6ca; --s-slat: #9b9285; --s-floor: #8d857a; --s-up: #16924a; --s-down: #c77d00;
+    --scrim: rgba(40,34,26,.42);
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "@garage-control/mock-device",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": { "dev": "tsx src/index.ts", "build": "tsc -p tsconfig.json", "typecheck": "tsc -p tsconfig.json" },
+  "dependencies": { "@garage-control/shared-types": "0.1.0", "mqtt": "^5.10.4" },
+  "devDependencies": { "@types/node": "^22.15.21", "tsx": "^4.19.4" }
+}

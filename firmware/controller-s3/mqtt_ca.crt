@@ -1,0 +1,4 @@
+# Replace this file with the PEM-encoded CA certificate of your own MQTT broker
+# (the CA that signed the broker certificate behind your mqtts:// URI).
+# See docs/SETUP.md. Keep your real certificate out of Git if you prefer:
+#   git update-index --skip-worktree firmware/*/mqtt_ca.crt

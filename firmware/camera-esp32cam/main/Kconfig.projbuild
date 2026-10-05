@@ -1,0 +1,38 @@
+menu "Garage camera"
+config GARAGE_CAMERA_BOARD_PROFILE
+    string "Camera board profile"
+    default "AI_THINKER_ESP32_CAM"
+config GARAGE_CAMERA_BOARD_AI_THINKER
+    bool "Use validated AI Thinker ESP32-CAM pin map"
+    default n
+config GARAGE_CAMERA_WIFI_SSID
+    string "Wi-Fi SSID"
+config GARAGE_CAMERA_WIFI_PASSWORD
+    string "Wi-Fi password"
+config GARAGE_CAMERA_MQTT_URI
+    string "MQTT URI"
+config GARAGE_CAMERA_ID
+    string "Camera ID"
+    default "camera-esp32cam-001"
+config GARAGE_CAMERA_GARAGE_ID
+    string "Garage ID"
+    default "garage-01"
+config GARAGE_CAMERA_FIRMWARE_VERSION
+    string "Firmware version"
+    default "0.2.0"
+config GARAGE_CAMERA_UPLOAD_URL
+    string "HTTPS upload URL"
+config GARAGE_CAMERA_UPLOAD_TOKEN
+    string "HTTPS upload token"
+config GARAGE_CAMERA_DEVICE_TOKEN
+    string "Camera device credential"
+    help
+        Separate long-lived device credential. Never reuse an admin, database or SSH credential.
+config GARAGE_CAMERA_MQTT_USERNAME
+    string "MQTT username"
+config GARAGE_CAMERA_MQTT_PASSWORD
+    string "MQTT password"
+config GARAGE_CAMERA_INGEST_SCHEME
+    string "Live ingest WebSocket scheme"
+    default "ws"
+endmenu

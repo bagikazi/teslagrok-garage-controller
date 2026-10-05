@@ -1,0 +1,9 @@
+idf_component_register(
+    SRCS
+        "display_ui.c"
+        "display_icons.c"
+    INCLUDE_DIRS
+        "include"
+    REQUIRES
+        lvgl
+)

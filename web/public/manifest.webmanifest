@@ -1,0 +1,10 @@
+{
+  "name": "Garage Control",
+  "short_name": "Garage",
+  "description": "Secure remote garage monitoring and control",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#131210",
+  "theme_color": "#131210",
+  "icons": []
+}

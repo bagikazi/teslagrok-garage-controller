@@ -1,0 +1,55 @@
+openapi: 3.1.0
+info:
+  title: Garage Control API
+  version: 0.1.0
+servers:
+  - url: https://garage.example.com
+security:
+  - bearerAuth: []
+paths:
+  /api/auth/login:
+    post:
+      security: []
+      summary: Start an access session
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/LoginRequest' } } }
+      responses: { '200': { description: Authenticated }, '401': { description: Invalid credentials } }
+  /api/auth/refresh:
+    post: { security: [], responses: { '200': { description: Refreshed }, '401': { description: Invalid refresh session } } }
+  /api/garage/status:
+    get: { responses: { '200': { description: Latest garage status, content: { application/json: { schema: { $ref: '#/components/schemas/GarageStatus' } } } } } }
+  /api/garage/open:
+    post: { responses: { '200': { description: Already open }, '202': { description: Command published } } }
+  /api/garage/close:
+    post: { responses: { '200': { description: Already closed }, '202': { description: Command published } } }
+  /api/garage/stop:
+    post: { responses: { '200': { description: No movement }, '202': { description: Command published } } }
+  /api/garage/events:
+    get: { responses: { '200': { description: Activity history } } }
+  /api/camera/latest:
+    get: { responses: { '200': { description: Latest image metadata } } }
+  /api/camera/snapshot:
+    post: { responses: { '202': { description: Snapshot requested } } }
+  /api/system/health:
+    get: { security: [], responses: { '200': { description: Process is healthy } } }
+  /ws:
+    get: { summary: WebSocket live event stream, responses: { '101': { description: Switching protocols } } }
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+  schemas:
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email: { type: string, format: email }
+        password: { type: string, minLength: 1 }
+    GarageStatus:
+      type: object
+      required: [state, device]
+      properties:
+        state: { type: string, enum: [CLOSED, OPEN, OPENING, CLOSING, STOPPED, UNKNOWN, OFFLINE, ERROR] }
+        lastChangedAt: { type: string, format: date-time, nullable: true }
+        requestedAction: { type: string, enum: [OPEN, CLOSE, STOP], nullable: true }
+        device: { type: object }
